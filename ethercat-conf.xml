@@ -1,44 +1,81 @@
 <masters>
    <master idx="0" appTimePeriod="1000000" refClockSyncCycles="5">
 <slave idx="0" type="generic" vid="0x0000006a" pid="0x11110100" configPdos="true">
-        <!--  Clear SM PDOs  -->
-	<sdoConfig idx="1C12" subIdx="00">
-		<sdoDataRaw data="00"/>
-	</sdoConfig>
-	<!--  Clear SM PDOs  -->
-	<sdoConfig idx="1C13" subIdx="00">
-		<sdoDataRaw data="00"/>
-	</sdoConfig>
-	<!--  Clear RX PDO1  -->
-	<sdoConfig idx="1A00" subIdx="00">
-		<sdoDataRaw data="00"/>
-	</sdoConfig>
-	<!--  Clear TX-PDO1  -->
-	<sdoConfig idx="1600" subIdx="00">
-		<sdoDataRaw data="00"/>
-	</sdoConfig>	
+<!--  Clear SM PDOs  -->
+<sdoConfig idx="1C12" subIdx="00">
+<sdoDataRaw data="00"/>
+</sdoConfig>
+<!--  Clear SM PDOs  -->
+<sdoConfig idx="1C13" subIdx="00">
+<sdoDataRaw data="00"/>
+</sdoConfig>
 
-	<dcConf assignActivate="300" sync0Cycle="1000000" sync0Shift="250000" />
+<!--  Clear RX PDO1  -->
+<sdoConfig idx="1A00" subIdx="00">
+<sdoDataRaw data="00"/>
+</sdoConfig>
+<!--  Map status word to RX-PDO1  -->
+<!--   0x6041 0010  -->
+<sdoConfig idx="1A00" subIdx="01">
+<sdoDataRaw data="10 00 41 60"/>
+</sdoConfig>
+<!--  Map position feedback to RX-PDO1  -->
+<!--  0x6064 0020  -->
+<sdoConfig idx="1A00" subIdx="02">
+<sdoDataRaw data="20 00 64 60"/>
+</sdoConfig>
+<!--  Set RX-PDO1 count to 2  -->
+<sdoConfig idx="1A00" subIdx="00">
+<sdoDataRaw data="02"/>
+</sdoConfig>
+
+<!--  Clear TX-PDO1  -->
+<sdoConfig idx="1600" subIdx="00">
+<sdoDataRaw data="00"/>
+</sdoConfig>
+<!--  Map control word to TX-PDO1  -->
+<!--  0x6040 0010  -->
+<sdoConfig idx="1600" subIdx="01">
+<sdoDataRaw data="10 00 40 60"/>
+</sdoConfig>
+<!--  Map position command to TX-PDO1  -->
+<!--  0x607A 0020  -->
+<sdoConfig idx="1600" subIdx="02">
+<sdoDataRaw data="20 00 7A 60"/>
+</sdoConfig>
+<!--  Set TX-PDO1 count to 2  -->
+<sdoConfig idx="1600" subIdx="00">
+<sdoDataRaw data="02"/>
+</sdoConfig>
+
+<!-- Set Fault Reset in Control Word 0x80 -->
+<sdoConfig idx="6040" subIdx="00">
+    <sdoDataRaw data="80 00"/> 
+</sdoConfig>
+
+<syncManager idx="0" dir="out"> </syncManager>
+<syncManager idx="1" dir="in"> </syncManager>
         <syncManager idx="2" dir="out">
             <pdo idx="1600">
                <pdoEntry idx="6040" subIdx="00" bitLen="16" halPin="cia-controlword" halType="u32" />
                <pdoEntry idx="607A" subIdx="00" bitLen="32" halPin="target-position" halType="s32" />
-               <pdoEntry idx="60FF" subIdx="00" bitLen="32" halPin="target-velocity" halType="s32" />
-                <pdoEntry idx="6060" subIdx="00" bitLen="8" halPin="opmode" halType="s32" />
+               <!--pdoEntry idx="60FF" subIdx="00" bitLen="32" halPin="target-velocity" halType="s32" /-->
+                <!--pdoEntry idx="6060" subIdx="00" bitLen="8" halPin="opmode" halType="s32" /-->
             </pdo>
          </syncManager>
          <syncManager idx="3" dir="in">
             <pdo idx="1a00">
                <pdoEntry idx="6041" subIdx="00" bitLen="16" halPin="cia-statusword" halType="u32" />
                 <pdoEntry idx="6064" subIdx="00" bitLen="32" halPin="actual-position" halType="s32" />
-                <pdoEntry idx="606C" subIdx="00" bitLen="32" halPin="actual-velocity" halType="s32" />
-                <pdoEntry idx="6061" subIdx="00" bitLen="8" halPin="opmode-display" halType="s32" />
+                <!--pdoEntry idx="606C" subIdx="00" bitLen="32" halPin="actual-velocity" halType="s32" /-->
+                <!--pdoEntry idx="6061" subIdx="00" bitLen="8" halPin="opmode-display" halType="s32" /-->
                <!--pdoEntry idx="0002" subIdx="00"  bitLen="8"/-->
                <!--pdoEntry idx="60F4" subIdx="00" bitLen="32" halPin="following-error-act-val" halType="s32" /-->
                <!--pdoEntry idx="6077" subIdx="00" bitLen="32" halPin="actual-torque" halType="s32" /-->
             </pdo>
          </syncManager>
-      </slave>
+	     <!--dcConf assignActivate="300" sync0Cycle="1000000" sync0Shift="250000"/-->
+	 </slave>
 </master>
 </masters>
 
