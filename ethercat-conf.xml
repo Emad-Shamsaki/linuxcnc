@@ -1,58 +1,6 @@
 <masters>
    <master idx="0" appTimePeriod="1000000" refClockSyncCycles="5">
 <slave idx="0" type="generic" vid="0x0000006a" pid="0x11110100" configPdos="true">
-<!--  Clear SM PDOs  -->
-<sdoConfig idx="1C12" subIdx="00">
-<sdoDataRaw data="00"/>
-</sdoConfig>
-<!--  Clear SM PDOs  -->
-<sdoConfig idx="1C13" subIdx="00">
-<sdoDataRaw data="00"/>
-</sdoConfig>
-
-<!--  Clear RX PDO1  -->
-<sdoConfig idx="1A00" subIdx="00">
-<sdoDataRaw data="00"/>
-</sdoConfig>
-<!--  Map status word to RX-PDO1  -->
-<!--   0x6041 0010  -->
-<sdoConfig idx="1A00" subIdx="01">
-<sdoDataRaw data="10 00 41 60"/>
-</sdoConfig>
-<!--  Map position feedback to RX-PDO1  -->
-<!--  0x6064 0020  -->
-<sdoConfig idx="1A00" subIdx="02">
-<sdoDataRaw data="20 00 64 60"/>
-</sdoConfig>
-<!--  Set RX-PDO1 count to 2  -->
-<sdoConfig idx="1A00" subIdx="00">
-<sdoDataRaw data="02"/>
-</sdoConfig>
-
-<!--  Clear TX-PDO1  -->
-<sdoConfig idx="1600" subIdx="00">
-<sdoDataRaw data="00"/>
-</sdoConfig>
-<!--  Map control word to TX-PDO1  -->
-<!--  0x6040 0010  -->
-<sdoConfig idx="1600" subIdx="01">
-<sdoDataRaw data="10 00 40 60"/>
-</sdoConfig>
-<!--  Map position command to TX-PDO1  -->
-<!--  0x607A 0020  -->
-<sdoConfig idx="1600" subIdx="02">
-<sdoDataRaw data="20 00 7A 60"/>
-</sdoConfig>
-<!--  Set TX-PDO1 count to 2  -->
-<sdoConfig idx="1600" subIdx="00">
-<sdoDataRaw data="02"/>
-</sdoConfig>
-
-<!-- Set Fault Reset in Control Word 0x80 -->
-<sdoConfig idx="6040" subIdx="00">
-    <sdoDataRaw data="80 00"/> 
-</sdoConfig>
-
 <syncManager idx="0" dir="out"> </syncManager>
 <syncManager idx="1" dir="in"> </syncManager>
         <syncManager idx="2" dir="out">
