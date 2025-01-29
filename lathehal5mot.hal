@@ -7,17 +7,21 @@ loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadusr -W lcec_conf ethercat-conf5mot.xml
 loadrt lcec
-loadrt cia402 count=3
+loadrt cia402 count=5
 
 addf lcec.read-all            servo-thread
 addf cia402.0.read-all        servo-thread
 addf cia402.1.read-all        servo-thread
 addf cia402.2.read-all        servo-thread
+addf cia402.3.read-all        servo-thread
+addf cia402.4.read-all        servo-thread
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
 addf cia402.0.write-all       servo-thread
 addf cia402.1.write-all       servo-thread
 addf cia402.2.write-all       servo-thread
+addf cia402.3.write-all       servo-thread
+addf cia402.4.write-all       servo-thread
 addf lcec.write-all           servo-thread
 
 
@@ -126,6 +130,76 @@ net z-controlword         cia402.2.controlword         => lcec.0.2.cia-controlwo
 net z-modes-of-operation  cia402.2.opmode              => lcec.0.2.opmode
 net z-drv-target-pos      cia402.2.drv-target-position => lcec.0.2.target-position
 net z-drv-target-velo     cia402.2.drv-target-velocity => lcec.0.2.target-velocity
+
+#*******************
+#  AXIS A
+#*******************
+
+# --- joint signals for motion
+
+net a-pos-cmd    <= joint.3.motor-pos-cmd
+net a-vel-cmd    <= joint.3.vel-cmd
+net a-pos-fb     <= joint.3.motor-pos-fb
+net a-enable     <= joint.3.amp-enable-out
+
+# --- connect stepper driver to the joint
+
+net a-pos-cmd    => cia402.3.pos-cmd
+net a-pos-fb     => cia402.3.pos-fb
+net a-enable     => cia402.3.enable
+
+# --- ect60 settings
+
+setp cia402.3.csp-mode 1
+setp cia402.3.pos-scale 1000
+
+# --- from servo(ethercat) to cia402
+
+net a-statusword      lcec.0.3.cia-statusword  => cia402.3.statusword
+net a-opmode-display  lcec.0.3.opmode-display  => cia402.3.opmode-display
+net a-drv-act-pos     lcec.0.3.actual-position => cia402.3.drv-actual-position
+net a-drv-act-velo    lcec.0.3.actual-velocity => cia402.3.drv-actual-velocity
+
+# --- from cia402 to servo(ethercat)
+net a-controlword         cia402.3.controlword         => lcec.0.3.cia-controlword
+net a-modes-of-operation  cia402.3.opmode              => lcec.0.3.opmode
+net a-drv-target-pos      cia402.3.drv-target-position => lcec.0.3.target-position
+net a-drv-target-velo     cia402.3.drv-target-velocity => lcec.0.3.target-velocity
+
+#*******************
+#  AXIS B
+#*******************
+
+# --- joint signals for motion
+
+net b-pos-cmd    <= joint.4.motor-pos-cmd
+net b-vel-cmd    <= joint.4.vel-cmd
+net b-pos-fb     <= joint.4.motor-pos-fb
+net b-enable     <= joint.4.amp-enable-out
+
+# --- connect stepper driver to the joint
+
+net b-pos-cmd    => cia402.4.pos-cmd
+net b-pos-fb     => cia402.4.pos-fb
+net b-enable     => cia402.4.enable
+
+# --- ect60 settings
+
+setp cia402.4.csp-mode 1
+setp cia402.4.pos-scale 1000
+
+# --- from servo(ethercat) to cia402
+
+net b-statusword      lcec.0.4.cia-statusword  => cia402.4.statusword
+net b-opmode-display  lcec.0.4.opmode-display  => cia402.4.opmode-display
+net b-drv-act-pos     lcec.0.4.actual-position => cia402.4.drv-actual-position
+net b-drv-act-velo    lcec.0.4.actual-velocity => cia402.4.drv-actual-velocity
+
+# --- from cia402 to servo(ethercat)
+net b-controlword         cia402.4.controlword         => lcec.0.4.cia-controlword
+net b-modes-of-operation  cia402.4.opmode              => lcec.0.4.opmode
+net b-drv-target-pos      cia402.4.drv-target-position => lcec.0.4.target-position
+net b-drv-target-velo     cia402.4.drv-target-velocity => lcec.0.4.target-velocity
 
 #*********************
 #   E-STOP
